@@ -40,7 +40,7 @@
 
 #include <opencv2/opencv.hpp>
 
-namespace image_view {
+namespace disparity_view {
 
 class DisparityNodelet : public nodelet::Nodelet
 {
@@ -390,8 +390,8 @@ unsigned char DisparityNodelet::colormap[768] =
     255,  0, 0,
   };
 
-} // namespace image_view
+} // namespace disparity_view
 
 // Register the nodelet
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS( image_view::DisparityNodelet, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS( disparity_view::DisparityNodelet, nodelet::Nodelet)

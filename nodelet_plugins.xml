@@ -1,7 +1,5 @@
-<library path="lib/libimage_view">
-
-  <class name="image_view/disparity" type="image_view::DisparityNodelet" base_class_type="nodelet::Nodelet">
+<library path="lib/libdisparity_view">
+  <class name="disparity_view/disparity" type="disparity_view::DisparityNodelet" base_class_type="nodelet::Nodelet">
     <description>Nodelet to view a stereo_msgs/DisparityImage topic</description>
   </class>
-
 </library>

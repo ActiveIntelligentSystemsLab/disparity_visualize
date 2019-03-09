@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(image_view)
+project(disparity_view)
 
 find_package(catkin REQUIRED COMPONENTS camera_calibration_parsers cv_bridge image_transport message_filters message_generation nodelet rosconsole roscpp std_srvs stereo_msgs)
 catkin_package()
@@ -11,20 +11,21 @@ include_directories(${catkin_INCLUDE_DIRS}
 )
 
 # Nodelet library
-add_library(image_view src/nodelets/disparity_nodelet.cpp)
-target_link_libraries(image_view ${catkin_LIBRARIES}
-                                 ${OpenCV_LIBRARIES}
+add_library(disparity_view src/nodelets/disparity_nodelet.cpp)
+target_link_libraries(disparity_view
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
-install(TARGETS image_view
+install(TARGETS disparity_view
         DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
-add_executable(disparity_view src/nodes/disparity_view.cpp)
-target_link_libraries(disparity_view ${catkin_LIBRARIES}
+add_executable(disparity_view_node src/nodes/disparity_view.cpp)
+target_link_libraries(disparity_view_node ${catkin_LIBRARIES}
                                      ${OpenCV_LIBRARIES}
 )
 
-install(TARGETS disparity_view
+install(TARGETS disparity_view_node
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 install(FILES nodelet_plugins.xml

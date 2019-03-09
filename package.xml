@@ -1,5 +1,5 @@
 <package>
-  <name>image_view</name>
+  <name>disparity_view</name>
   <version>1.12.23</version>
   <description>
   A simple viewer for ROS image topics. Includes a specialized viewer
