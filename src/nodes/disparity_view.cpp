@@ -37,10 +37,6 @@
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "disparity_view", ros::init_options::AnonymousName);
-  if (ros::names::remap("image") == "image") {
-    ROS_WARN("Topic 'image' has not been remapped! Typical command-line usage:\n"
-             "\t$ rosrun image_view disparity_view image:=<disparity image topic>");
-  }
 
   nodelet::Loader manager(false);
   nodelet::M_string remappings;
