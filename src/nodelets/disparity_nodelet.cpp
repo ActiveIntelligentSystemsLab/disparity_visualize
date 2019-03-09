@@ -32,31 +32,13 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 *********************************************************************/
 #include <ros/ros.h>
+#include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
 #include <nodelet/nodelet.h>
 #include <sensor_msgs/image_encodings.h>
 #include <stereo_msgs/DisparityImage.h>
-#include <opencv2/highgui/highgui.hpp>
-#include "window_thread.h"
 
-#ifdef HAVE_GTK
-#include <gtk/gtk.h>
-
-// Platform-specific workaround for #3026: image_view doesn't close when
-// closing image window. On platforms using GTK+ we connect this to the
-// window's "destroy" event so that image_view exits.
-static void destroyNode(GtkWidget *widget, gpointer data)
-{
-  exit(0);
-}
-
-static void destroyNodelet(GtkWidget *widget, gpointer data)
-{
-  // We can't actually unload the nodelet from here, but we can at least
-  // unsubscribe from the image topic.
-  reinterpret_cast<ros::Subscriber*>(data)->shutdown();
-}
-#endif
-
+#include <opencv2/opencv.hpp>
 
 namespace image_view {
 
@@ -65,7 +47,8 @@ class DisparityNodelet : public nodelet::Nodelet
   // colormap for disparities, RGB order
   static unsigned char colormap[];
 
-  std::string window_name_;
+  std::shared_ptr<image_transport::ImageTransport> image_transport_;
+  image_transport::Publisher pub_;
   ros::Subscriber sub_;
   cv::Mat_<cv::Vec3b> disparity_color_;
   bool initialized;
@@ -80,7 +63,6 @@ public:
 
 DisparityNodelet::~DisparityNodelet()
 {
-  cv::destroyWindow(window_name_);
 }
 
 void DisparityNodelet::onInit()
@@ -88,34 +70,18 @@ void DisparityNodelet::onInit()
   initialized = false;
   ros::NodeHandle nh = getNodeHandle();
   ros::NodeHandle local_nh = getPrivateNodeHandle();
+  image_transport_.reset(new image_transport::ImageTransport(nh));
   const std::vector<std::string>& argv = getMyArgv();
 
   // Internal option, should be used only by image_view nodes
   bool shutdown_on_close = std::find(argv.begin(), argv.end(),
                                      "--shutdown-on-close") != argv.end();
 
-  // Default window name is the resolved topic name
-  std::string topic = nh.resolveName("image");
-  local_nh.param("window_name", window_name_, topic);
-
   bool autosize;
   local_nh.param("autosize", autosize, false);
 
-  //cv::namedWindow(window_name_, autosize ? cv::WND_PROP_AUTOSIZE : 0);
-#if CV_MAJOR_VERSION ==2
-#ifdef HAVE_GTK
-  // Register appropriate handler for when user closes the display window
-  GtkWidget *widget = GTK_WIDGET( cvGetWindowHandle(window_name_.c_str()) );
-  if (shutdown_on_close)
-    g_signal_connect(widget, "destroy", G_CALLBACK(destroyNode), NULL);
-  else
-    g_signal_connect(widget, "destroy", G_CALLBACK(destroyNodelet), &sub_);
-#endif
-  // Start the OpenCV window thread so we don't have to waitKey() somewhere
-  startWindowThread();
-#endif
-
-  sub_ = nh.subscribe<stereo_msgs::DisparityImage>(topic, 1, &DisparityNodelet::imageCb, this);
+  sub_ = nh.subscribe<stereo_msgs::DisparityImage>("disparity", 1, &DisparityNodelet::imageCb, this);
+  pub_ = image_transport_->advertise("image", 1);
 }
 
 void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
@@ -136,7 +102,6 @@ void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
   }
   
   if(!initialized) {
-    cv::namedWindow(window_name_, false ? cv::WND_PROP_AUTOSIZE : 0);
     initialized = true;
   }
   // Colormap and display the disparity image
@@ -162,15 +127,8 @@ void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
     }
   }
 
-  /// @todo For Electric, consider option to draw outline of valid window
-#if 0
-  sensor_msgs::RegionOfInterest valid = msg->valid_window;
-  cv::Point tl(valid.x_offset, valid.y_offset), br(valid.x_offset + valid.width, valid.y_offset + valid.height);
-  cv::rectangle(disparity_color_, tl, br, CV_RGB(255,0,0), 1);
-#endif
-
-  cv::imshow(window_name_, disparity_color_);
-  cv::waitKey(10);
+  cv_bridge::CvImage cv_image(msg->header, sensor_msgs::image_encodings::BGR8, disparity_color_);
+  pub_.publish(cv_image.toImageMsg());
 }
 
 unsigned char DisparityNodelet::colormap[768] =
