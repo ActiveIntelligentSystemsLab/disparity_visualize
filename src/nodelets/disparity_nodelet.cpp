@@ -70,7 +70,7 @@ void DisparityNodelet::onInit()
   initialized = false;
   ros::NodeHandle nh = getNodeHandle();
   ros::NodeHandle local_nh = getPrivateNodeHandle();
-  image_transport_.reset(new image_transport::ImageTransport(nh));
+  image_transport_.reset(new image_transport::ImageTransport(local_nh));
   const std::vector<std::string>& argv = getMyArgv();
 
   // Internal option, should be used only by image_view nodes
