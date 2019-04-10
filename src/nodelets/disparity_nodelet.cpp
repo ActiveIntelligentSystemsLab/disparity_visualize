@@ -107,20 +107,32 @@ void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
 
   const cv::Mat_<float> dmat(msg->image.height, msg->image.width,
                              (float*)&msg->image.data[0], msg->image.step);
+
+  // To save index of invalid pixels
+  std::vector<int> invalid_indices;
+  invalid_indices.reserve(dmat.rows * dmat.cols);
   
+  // disparity normalized to [0, 255]
   cv::Mat normalized_disparity(msg->image.height, msg->image.width, CV_8UC1);
 
   for (int i = 0; i < dmat.rows * dmat.cols; ++i) {
     float disparity_at = dmat.at<float>(i);
-    if (disparity_at > max_disparity)
-      disparity_at = max_disparity;
-    if (disparity_at < min_disparity)
-      disparity_at = min_disparity;
+
+    if (disparity_at > max_disparity || disparity_at < min_disparity)
+      invalid_indices.push_back(i);
+
     normalized_disparity.at<unsigned char>(i) = (disparity_at - min_disparity) / (max_disparity - min_disparity) * 255;
   }
 
+  // Colored by HSV color map
   cv::Mat colored_disparity;
   cv::applyColorMap(normalized_disparity, colored_disparity, cv::COLORMAP_HSV);
+
+  for (int invalid_index : invalid_indices)
+  {
+    cv::Vec3b &invalid_pixel = colored_disparity.at<cv::Vec3b>(invalid_index);
+    invalid_pixel = cv::Vec3b(0, 0, 0);
+  }
 
   cv_bridge::CvImage cv_image(msg->header, sensor_msgs::image_encodings::BGR8, colored_disparity);
   pub_.publish(cv_image.toImageMsg());
