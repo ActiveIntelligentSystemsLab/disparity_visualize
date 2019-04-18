@@ -1,6 +1,6 @@
-# disparity_visualizer
+# diparity_visualize
 
-`disparity_visualizer` is a ROS package and contains a nodelet to visualize [stereo_msgs/DisparityImage](http://docs.ros.org/api/stereo_msgs/html/msg/DisparityImage.html) .
+`diparity_visualize` is a ROS package and contains a nodelet to visualize [stereo_msgs/DisparityImage](http://docs.ros.org/api/stereo_msgs/html/msg/DisparityImage.html) .
 
 This is similar to [disparity_view in image_view](http://wiki.ros.org/image_view) but there are some difference:
 - Output is ROS topic instead of OpenCV window
@@ -8,7 +8,7 @@ This is similar to [disparity_view in image_view](http://wiki.ros.org/image_view
 
 ![Sample](images/sample_result.png)
 
-## disparity_visualizer/disparity_visualizer
+## diparity_visualize/diparity_visualize
 
 A nodelet visualizes [stereo_msgs/DisparityImage](http://docs.ros.org/api/stereo_msgs/html/msg/DisparityImage.html) as RGB [sensor_msgs/Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html) .
 
