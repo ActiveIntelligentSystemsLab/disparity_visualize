@@ -18,7 +18,6 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
-# Nodelet library
 add_library(disparity_view src/nodelets/disparity_nodelet.cpp)
 target_link_libraries(disparity_view
   ${catkin_LIBRARIES}
@@ -29,16 +28,6 @@ install(
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
-add_executable(disparity_view_node src/nodes/disparity_view.cpp)
-target_link_libraries(disparity_view_node
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBRARIES}
-)
-
-install(
-  TARGETS disparity_view_node
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
 install(
   FILES nodelet_plugins.xml
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
