@@ -18,7 +18,7 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
-add_library(disparity_view src/nodelets/disparity_visualize_nodelet.cpp)
+add_library(disparity_view src/disparity_visualize_nodelet.cpp)
 target_link_libraries(disparity_view
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
