@@ -1,5 +1,5 @@
 <package format="2">
-  <name>disparity_view</name>
+  <name>disparity_visualize</name>
   <version>1.0.0</version>
   <description>
   A simple viewer for ROS stereo_msgs/DisparityImage topics

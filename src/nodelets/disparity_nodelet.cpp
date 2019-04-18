@@ -14,7 +14,7 @@
 
 #include <opencv2/opencv.hpp>
 
-namespace disparity_view {
+namespace disparity_visualize {
 
 class DisparityNodelet : public nodelet::Nodelet
 {
@@ -112,8 +112,8 @@ void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
   pub_.publish(cv_image.toImageMsg());
 }
 
-} // namespace disparity_view
+} // namespace disparity_visualize
 
 // Register the nodelet
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS( disparity_view::DisparityNodelet, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS( disparity_visualize::DisparityNodelet, nodelet::Nodelet)
