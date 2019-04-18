@@ -4,7 +4,7 @@
   <description>Visualize stereo_msgs/DisparityImage as RGB sensor_msgs/Image topic</description>
   <maintainer email="fujimoto@aisl.cs.tut.ac.jp">Hironori Fujimoto</maintainer>
   <license>BSD</license>
-  <url>https://aisl-serv6.aisl.cs.tut.ac.jp:20443/fujimoto/disparity_view</url>
+  <url>https://github.com/ActiveIntelligentSystemsLab/disparity_visualize</url>
 
   <export>
     <nodelet plugin="${prefix}/nodelet_plugins.xml" />
