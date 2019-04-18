@@ -5,7 +5,7 @@
   A simple viewer for ROS stereo_msgs/DisparityImage topics
   </description>
   <maintainer email="fujimoto@aisl.cs.tut.ac.jp">Hironori Fujimoto</maintainer>
-  <license>TODO</license>
+  <license>BSD</license>
   <url>https://aisl-serv6.aisl.cs.tut.ac.jp:20443/fujimoto/disparity_view</url>
 
   <export>
