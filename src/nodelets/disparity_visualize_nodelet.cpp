@@ -16,7 +16,7 @@
 
 namespace disparity_visualize {
 
-class DisparityNodelet : public nodelet::Nodelet
+class DisparityVisualizeNodelet : public nodelet::Nodelet
 {
   std::shared_ptr<image_transport::ImageTransport> image_transport_;
   image_transport::Publisher pub_;
@@ -27,24 +27,24 @@ class DisparityNodelet : public nodelet::Nodelet
   void imageCb(const stereo_msgs::DisparityImageConstPtr& msg);
 
 public:
-  ~DisparityNodelet();
+  ~DisparityVisualizeNodelet();
 };
 
-DisparityNodelet::~DisparityNodelet()
+DisparityVisualizeNodelet::~DisparityVisualizeNodelet()
 {
 }
 
-void DisparityNodelet::onInit()
+void DisparityVisualizeNodelet::onInit()
 {
   ros::NodeHandle nh = getNodeHandle();
   ros::NodeHandle local_nh = getPrivateNodeHandle();
   image_transport_.reset(new image_transport::ImageTransport(local_nh));
 
-  sub_ = nh.subscribe<stereo_msgs::DisparityImage>("disparity", 1, &DisparityNodelet::imageCb, this);
+  sub_ = nh.subscribe<stereo_msgs::DisparityImage>("disparity", 1, &DisparityVisualizeNodelet::imageCb, this);
   pub_ = image_transport_->advertise("image", 1);
 }
 
-void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
+void DisparityVisualizeNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
 {
   // Check for common errors in input
   if (msg->min_disparity == 0.0 && msg->max_disparity == 0.0)
@@ -102,4 +102,4 @@ void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
 
 // Register the nodelet
 #include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS( disparity_visualize::DisparityNodelet, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS( disparity_visualize::DisparityVisualizeNodelet, nodelet::Nodelet)
