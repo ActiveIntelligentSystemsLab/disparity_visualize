@@ -1,9 +1,7 @@
 <package format="2">
   <name>disparity_visualize</name>
   <version>1.0.0</version>
-  <description>
-  A simple viewer for ROS stereo_msgs/DisparityImage topics
-  </description>
+  <description>Visualize stereo_msgs/DisparityImage as RGB sensor_msgs/Image topic</description>
   <maintainer email="fujimoto@aisl.cs.tut.ac.jp">Hironori Fujimoto</maintainer>
   <license>BSD</license>
   <url>https://aisl-serv6.aisl.cs.tut.ac.jp:20443/fujimoto/disparity_view</url>

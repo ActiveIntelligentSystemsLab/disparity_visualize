@@ -1,5 +1,5 @@
 <library path="lib/libdisparity_visualize">
   <class name="disparity_visualize/disparity_visualize" type="disparity_visualize::DisparityVisualizeNodelet" base_class_type="nodelet::Nodelet">
-    <description>Nodelet to view a stereo_msgs/DisparityImage topic</description>
+    <description>Visualize stereo_msgs/DisparityImage as RGB sensor_msgs/Image topic</description>
   </class>
 </library>
