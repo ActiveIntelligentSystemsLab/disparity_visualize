@@ -21,8 +21,6 @@ class DisparityNodelet : public nodelet::Nodelet
   std::shared_ptr<image_transport::ImageTransport> image_transport_;
   image_transport::Publisher pub_;
   ros::Subscriber sub_;
-
-  bool initialized;
   
   virtual void onInit();
   
@@ -38,18 +36,9 @@ DisparityNodelet::~DisparityNodelet()
 
 void DisparityNodelet::onInit()
 {
-  initialized = false;
   ros::NodeHandle nh = getNodeHandle();
   ros::NodeHandle local_nh = getPrivateNodeHandle();
   image_transport_.reset(new image_transport::ImageTransport(local_nh));
-  const std::vector<std::string>& argv = getMyArgv();
-
-  // Internal option, should be used only by image_view nodes
-  bool shutdown_on_close = std::find(argv.begin(), argv.end(),
-                                     "--shutdown-on-close") != argv.end();
-
-  bool autosize;
-  local_nh.param("autosize", autosize, false);
 
   sub_ = nh.subscribe<stereo_msgs::DisparityImage>("disparity", 1, &DisparityNodelet::imageCb, this);
   pub_ = image_transport_->advertise("image", 1);
@@ -72,9 +61,6 @@ void DisparityNodelet::imageCb(const stereo_msgs::DisparityImageConstPtr& msg)
     return;
   }
   
-  if(!initialized) {
-    initialized = true;
-  }
   // Colormap and display the disparity image
   float min_disparity = msg->min_disparity;
   float max_disparity = msg->max_disparity;
