@@ -1,4 +1,4 @@
-<library path="lib/libdisparity_view">
+<library path="lib/libdisparity_visualize">
   <class name="disparity_visualize/disparity" type="disparity_visualize::DisparityVisualizeNodelet" base_class_type="nodelet::Nodelet">
     <description>Nodelet to view a stereo_msgs/DisparityImage topic</description>
   </class>

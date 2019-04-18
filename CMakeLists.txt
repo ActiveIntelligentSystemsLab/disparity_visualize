@@ -18,13 +18,13 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
-add_library(disparity_view src/disparity_visualize_nodelet.cpp)
-target_link_libraries(disparity_view
+add_library(${PROJECT_NAME} src/disparity_visualize_nodelet.cpp)
+target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
 )
 install(
-  TARGETS disparity_view
+  TARGETS ${PROJECT_NAME}
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
