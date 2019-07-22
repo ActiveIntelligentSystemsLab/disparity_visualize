@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node name="disparity_visualize" pkg="disparity_visualize" type="disparity_visualize_node">
+    <remap from="disparity" to="sgm_gpu/disparity"/>
+  </node>
+
+  <node name="bag_player" pkg="rosbag" type="play" args="--loop $(find disparity_visualize)/bag/test_input.bag"/>
+  <node name="image_viewer" pkg="rqt_image_view" type="rqt_image_view" args="/disparity_visualize/image"/>
+</launch>
