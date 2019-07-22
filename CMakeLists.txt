@@ -32,3 +32,6 @@ install(
   FILES nodelet_plugins.xml
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+add_executable(${PROJECT_NAME}_node src/disparity_visualize_node.cpp)
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
